@@ -16,6 +16,7 @@ static instruction_t lux[] = {
 void call_func(char **token, stack_t **stack)
 {
 	int index = 0;
+	unsigned int len = line_number;
 
 	while (lux[index].opcode)
 	{
@@ -24,7 +25,7 @@ void call_func(char **token, stack_t **stack)
 		if (strcmp(token[0], lux[index].opcode) == 0)
 		{
 			if (lux[index].f)
-				lux[index].f(stack, line_number);
+				lux[index].f(stack, len);
 			break;
 		}
 		index++;

@@ -1,6 +1,5 @@
 #include "monty.h"
-#include <stdlib.h>
-#include <stdio.h>
+unsigned int line_number = 0;
 /**
  * main - main function
  * @argc: argument counter
@@ -14,8 +13,8 @@ int main(int argc, char *argv[])
 	stack_t *head = NULL;
 	char *buffer = NULL;
 	FILE *fp;
-	size_t n;
-	int monty;
+	int index = 0;
+	char str[1024];
 
 	if (argc != 2)
 	{
@@ -29,10 +28,16 @@ int main(int argc, char *argv[])
 		fprintf(stderr, "Error: can't open file %s\n", argv[1]);
 		exit(EXIT_FAILURE);
 	}
+	fgets(str, 50, fp);
+	while (str != NULL)
+	{
+		buffer[index] = str[index];
+		index++;
+	}
 
-	monty = getline(&buffer, &n, fp);
-
-	while (monty != -1)
+	if (buffer == NULL)
+		return (0);
+	while (buffer != NULL)
 	{
 		line_number++;
 		token = persser_t(buffer);

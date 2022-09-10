@@ -38,7 +38,6 @@ typedef struct instruction_s
 	char *opcode;
 	void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
-
 stack_t *temp;
 char **persser_t(char *buffer);
 void push(stack_t **stack, unsigned int line);

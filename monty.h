@@ -1,13 +1,18 @@
-#ifndef _NONTY_
-#define _NONTY_
+#ifndef MONTY_H
+#define MONTY_H
+#define  _GNU_SOURCE
+
 #include <stdlib.h>
 #include <stdio.h>
-#include <string.h>
-#include <stddef.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 #include <ctype.h>
+#include <string.h>
+
 extern unsigned int line_number;
+
 /**
  * struct stack_s - doubly linked list representation of a stack (or queue)
  * @n: integer
@@ -24,7 +29,6 @@ typedef struct stack_s
 	struct stack_s *next;
 } stack_t;
 
-
 /**
  * struct instruction_s - opcode and its function
  * @opcode: the opcode
@@ -38,12 +42,28 @@ typedef struct instruction_s
 	char *opcode;
 	void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
-stack_t *temp;
-char **persser_t(char *buffer);
-void push(stack_t **stack, unsigned int line);
-void pall(stack_t **stack, unsigned int line);
-void call_func(char **token, stack_t **stack);
-void validator(char **token, stack_t **stack);
-void free_stack(stack_t **stack);
 
+stack_t *build_list(stack_t *head);
+void call(char **tokens, stack_t **stack);
+char **tokenize(char *buffer);
+stack_t *add_node_start(stack_t *h, int n);
+void _push(stack_t **stack, unsigned int n);
+void _pall(stack_t **stack, unsigned int n);
+void _swap(stack_t **stack, unsigned int line_number);
+void _add(stack_t **stack, unsigned int line_number);
+void _sub(stack_t **stack, unsigned int line_number);
+void _div(stack_t **stack, unsigned int line_number);
+void _mod(stack_t **stack, unsigned int line_number);
+void _pint(stack_t **stack, unsigned int line_number);
+void _nop(stack_t **stack, unsigned int line_number);
+void _mul(stack_t **stack, unsigned int line_number);
+void _pop(stack_t **stack, unsigned int line_number);
+void _pchar(stack_t **stack, unsigned int line_number);
+void _pstr(stack_t **stack, unsigned int line_number);
+void _rotl(stack_t **stack, unsigned int line_number);
+void _rotr(stack_t **stack, unsigned int line_number);
+void is_valid(char **token, stack_t **stack);
+void free_stack(stack_t **stack);
+void _queue(stack_t **stack, unsigned int line_number);
+void _stack(stack_t **stack, unsigned int line_number);
 #endif

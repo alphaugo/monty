@@ -1,46 +1,68 @@
 #include "monty.h"
-unsigned int line_number;
+
+unsigned int line_number = 0;
 /**
- * main - main function
- * @argc: argument counter
- * @argv: argument variable list
- *
- * Return: nothing
+ * main - driver programme
+ * @argc: argument count
+ * @argv: argument value
+ * Return: 0 on Success or EXIT_FAILURE on Failure
  */
-int main(int argc, char *argv[])
+
+int main(int argc, char **argv)
 {
-	char **token = NULL;
-	stack_t *head = NULL;
-	char *buffer = NULL;
+	char **tokens = NULL; /* for tokenized list */
+	stack_t *head = NULL; /* pointer to top of stack */
+	char *buffer = NULL; /* store getline */
 	FILE *fp;
-	char str[1024];
-	size_t buff = 1024;
+	size_t n;
 
 	if (argc != 2)
 	{
-		fprintf(stderr, "usage: monty file\n");
+		fprintf(stderr, "USAGE: monty file\n");
 		exit(EXIT_FAILURE);
 	}
 
 	fp = fopen(argv[1], "r+");
 	if (fp == NULL)
 	{
-		fprintf(stderr, "Error: can't open file %s\n", argv[1]);
+		fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
 		exit(EXIT_FAILURE);
 	}
-	
-	while (fgets(str, buff, fp) != NULL)
+
+	while ((getline(&buffer, &n, fp)) != -1)
 	{
 		line_number++;
-		token = persser_t(str);
-		if (token)
+		tokens = tokenize(buffer); /* result is at top of list */
+		if (tokens)
 		{
-			call_func(token, &head);
-			free(token);
+			call(tokens, &head);
+			free(tokens);
 		}
 	}
 	free(buffer);
 	free_stack(&head);
 	fclose(fp);
+
 	return (0);
+}
+
+/**
+ * free_stack - free the stack
+ * @stack: ptr to stack
+ * Return: Nothing
+ */
+void free_stack(stack_t **stack)
+{
+	stack_t *head = *stack;
+
+	while (head)
+	{
+		if (!head->next)
+		{
+			free(head);
+			break;
+		}
+		head = head->next;
+		free(head->prev);
+	}
 }
